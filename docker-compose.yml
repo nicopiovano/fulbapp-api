@@ -1,0 +1,50 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fulbapp_backend
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: fulbapp
+      APP_ENV: local
+      APP_KEY: base64:krv6CmofIlofAex56XNIji+5mBFQW6RL9rn63PvnOoA=
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: aws-1-us-east-2.pooler.supabase.com
+      DB_PORT: 5432
+      DB_DATABASE: postgres
+      DB_USERNAME: postgres.kpejwfduztsntxevvquu
+      DB_PASSWORD: fulbapp2026
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/app
+      - /app/vendor
+
+  db:
+    image: postgres:16
+    container_name: fulbapp_db
+    environment:
+      POSTGRES_DB: fulbapp
+      POSTGRES_USER: fulbapp
+      POSTGRES_PASSWORD: fulbapp
+    ports:
+      - "5433:5432"
+    volumes:
+      - fulbapp_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fulbapp -d fulbapp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  fulbapp_db_data:
+

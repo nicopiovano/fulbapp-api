@@ -6,12 +6,18 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class MatchResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
         $authId = (int) $request->user()?->id;
+        $now = Carbon::now();
+
+        $isPast = $this->date instanceof Carbon
+            ? $this->date->startOfDay()->lte($now->startOfDay()) && $this->time !== null && $this->date->toDateString() < $now->toDateString()
+            : false;
 
         return [
             'id'                      => $this->id,

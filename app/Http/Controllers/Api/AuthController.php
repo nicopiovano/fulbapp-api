@@ -31,8 +31,7 @@ class AuthController extends Controller
             ]);
         } catch (AuthenticationException $e) {
             return response()->json(['message' => $e->getMessage()], 401);
-        } catch (Throwable $th) {
-            dd($th->getMessage());
+        } catch (Throwable) {
             return response()->json(['message' => 'Server error'], 500);
         }
     }

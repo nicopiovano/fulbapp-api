@@ -13,7 +13,7 @@ API REST en **Laravel** para gestionar partidos de fútbol, jugadores y valoraci
 
 ### Opción 1 — Docker (recomendada)
 
-Desde el root del monorepo (`/Porfolio/futbol`):
+Desde la carpeta del backend (`/Porfolio/futbol/backend`):
 
 ```bash
 docker compose up --build
